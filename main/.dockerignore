@@ -1,0 +1,9 @@
+.git
+**/.DS_Store
+**/node_modules
+**/target
+**/dist
+**/.webpack_cache
+xiaozhi-server/models
+xiaozhi-server/data
+digital-human/resources

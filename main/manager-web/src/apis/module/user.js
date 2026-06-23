@@ -23,6 +23,26 @@ export default {
                 })
             }).send()
     },
+    // 创客平台单点登录
+    ssoLogin(data, callback, failCallback) {
+        RequestService.sendRequest()
+            .url(`${getServiceUrl()}/user/sso`)
+            .method('POST')
+            .data(data)
+            .success((res) => {
+                RequestService.clearRequestTime()
+                callback(res)
+            })
+            .fail((err) => {
+                RequestService.clearRequestTime()
+                failCallback(err)
+            })
+            .networkFail(() => {
+                RequestService.reAjaxFun(() => {
+                    this.ssoLogin(data, callback, failCallback)
+                })
+            }).send()
+    },
     // 获取验证码
     getCaptcha(uuid, callback) {
         RequestService.sendRequest()

@@ -17,6 +17,8 @@ public interface SysUserService extends BaseService<SysUserEntity> {
 
     SysUserDTO getByUserId(Long userId);
 
+    SysUserDTO createSsoUser(String username, boolean superAdmin);
+
     void save(SysUserDTO dto);
 
     /**

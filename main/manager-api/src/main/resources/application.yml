@@ -43,6 +43,10 @@ renren:
     enabled: true
     exclude-urls:
 
+chuangke:
+  sso:
+    secret: ${CHUANGKE_SSO_SECRET:}
+
 #mybatis
 mybatis-plus:
   mapper-locations: classpath*:/mapper/**/*.xml

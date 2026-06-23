@@ -72,6 +72,17 @@ public class ShiroConfig {
          * role：拥有某个角色权限才能访问
          */
         Map<String, String> filterMap = new LinkedHashMap<>();
+        filterMap.put("/", "anon");
+        filterMap.put("/index.html", "anon");
+        filterMap.put("/offline.html", "anon");
+        filterMap.put("/service-worker.js", "anon");
+        filterMap.put("/css/**", "anon");
+        filterMap.put("/js/**", "anon");
+        filterMap.put("/img/**", "anon");
+        filterMap.put("/fonts/**", "anon");
+        filterMap.put("/sso", "anon");
+        filterMap.put("/login", "anon");
+        filterMap.put("/device-management", "anon");
         filterMap.put("/ota/**", "anon");
         filterMap.put("/otaMag/download/**", "anon");
         filterMap.put("/webjars/**", "anon");
@@ -82,6 +93,7 @@ public class ShiroConfig {
         filterMap.put("/user/captcha", "anon");
         filterMap.put("/user/smsVerification", "anon");
         filterMap.put("/user/login", "anon");
+        filterMap.put("/user/sso", "anon");
         filterMap.put("/user/pub-config", "anon");
         filterMap.put("/user/register", "anon");
         filterMap.put("/user/retrieve-password", "anon");

@@ -69,6 +69,30 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUserDao, SysUserEntit
 
     @Override
     @Transactional(rollbackFor = Exception.class)
+    public SysUserDTO createSsoUser(String username, boolean superAdmin) {
+        SysUserDTO existing = getByUsername(username);
+        if (existing != null) {
+            if (superAdmin && existing.getSuperAdmin() != SuperAdminEnum.YES.value()) {
+                SysUserEntity update = new SysUserEntity();
+                update.setId(existing.getId());
+                update.setSuperAdmin(SuperAdminEnum.YES.value());
+                updateById(update);
+                existing.setSuperAdmin(SuperAdminEnum.YES.value());
+            }
+            return existing;
+        }
+
+        SysUserEntity entity = new SysUserEntity();
+        entity.setUsername(username);
+        entity.setPassword(PasswordUtils.encode(generatePassword()));
+        entity.setSuperAdmin(superAdmin ? SuperAdminEnum.YES.value() : SuperAdminEnum.NO.value());
+        entity.setStatus(1);
+        insert(entity);
+        return ConvertUtils.sourceToTarget(entity, SysUserDTO.class);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
     public void save(SysUserDTO dto) {
         SysUserEntity entity = ConvertUtils.sourceToTarget(dto, SysUserEntity.class);
 

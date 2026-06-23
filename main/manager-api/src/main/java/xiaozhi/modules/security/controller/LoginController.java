@@ -31,8 +31,10 @@ import xiaozhi.common.validator.AssertUtils;
 import xiaozhi.common.validator.ValidatorUtils;
 import xiaozhi.modules.security.dto.LoginDTO;
 import xiaozhi.modules.security.dto.SmsVerificationDTO;
+import xiaozhi.modules.security.dto.SsoLoginDTO;
 import xiaozhi.modules.security.password.PasswordUtils;
 import xiaozhi.modules.security.service.CaptchaService;
+import xiaozhi.modules.security.service.SsoTicketService;
 import xiaozhi.modules.security.service.SysUserTokenService;
 import xiaozhi.modules.security.user.SecurityUser;
 import xiaozhi.modules.sys.dto.PasswordDTO;
@@ -57,6 +59,7 @@ public class LoginController {
     private final CaptchaService captchaService;
     private final SysParamsService sysParamsService;
     private final SysDictDataService sysDictDataService;
+    private final SsoTicketService ssoTicketService;
 
     @GetMapping("/captcha")
     @Operation(summary = "验证码")
@@ -107,6 +110,14 @@ public class LoginController {
         if (!PasswordUtils.matches(login.getPassword(), userDTO.getPassword())) {
             throw new RenException(ErrorCode.ACCOUNT_PASSWORD_ERROR);
         }
+        return sysUserTokenService.createToken(userDTO.getId());
+    }
+
+    @PostMapping("/sso")
+    @Operation(summary = "创客平台单点登录")
+    public Result<TokenDTO> sso(@RequestBody SsoLoginDTO dto) {
+        SsoTicketService.SsoUser ssoUser = ssoTicketService.verify(dto.getTicket());
+        SysUserDTO userDTO = sysUserService.createSsoUser(ssoUser.username(), ssoUser.superAdmin());
         return sysUserTokenService.createToken(userDTO.getId());
     }
 

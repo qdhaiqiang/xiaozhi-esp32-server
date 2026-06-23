@@ -33,6 +33,13 @@ const routes = [
     }
   },
   {
+    path: '/sso',
+    name: 'sso',
+    component: function () {
+      return import('../views/sso.vue')
+    }
+  },
+  {
     path: '/home',
     name: 'home',
     component: function () {
